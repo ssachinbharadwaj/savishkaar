@@ -18,7 +18,7 @@ def signupuser(request):
     else:
         if request.POST['password1'] == request.POST['password2']:
             try:
-                user = User.objects.create_user(request.POST['username'], password=request.POST['password1'])
+                user = User.objects.create_user(request.POST['username'], password=request.POST['password1'], email=request.POST['email'])
                 user.save()
                 login(request, user)
                 return redirect('currenttodo')
@@ -33,7 +33,7 @@ def loginuser(request):
     else:
         user = authenticate(request, username=request.POST['username'], password= request.POST['password'])
         if user is None:
-            return render(request, "loginuser.html", {'form': AuthenticationForm(), 'error': 'Username and Password didnot match'})   
+            return render(request, "loginuser.html", {'form': AuthenticationForm(), 'error': 'Username and Password did not match'})   
         else:
             login(request, user)
             return redirect('currenttodo')
