@@ -11,3 +11,6 @@ class Todo(models.Model):
 
     def __str__(self):
         return self.title
+
+class departments(models.Model):
+    name = models.CharField(max_length=100,unique=True)

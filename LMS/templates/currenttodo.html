@@ -1,8 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
 
-{% csrf_token %}
 
-<h3>Website creation in Progress</h3>
 
+<!-- <h3>Website creation in Progress</h3> -->
+<form method="POST">
+    {% csrf_token %}
+<div class="form-group">
+    <label for="department">Create Department</label>
+    <input type="text" name="department" class="form-control" id="department" required>
+</div>
+
+{% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+{% endif %}
+
+<button type="submit" class="btn btn-primary" href="{% url  'currenttodo' %}">Create</button>
+</form>
+
+<div>
+    {% for dep in dep_list %}
+    <li>{{ dep.name }}</li>
+    {% endfor %}
+</div>
 {% endblock %}

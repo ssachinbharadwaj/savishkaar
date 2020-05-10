@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from .forms import TodoForm
 from .models import Todo
+from .models import departments
 # Create your views here.
 
 
@@ -57,5 +58,18 @@ def createtodo(request):
             return render(request, "createtodo.html", {'form': TodoForm(), 'error': 'Bad data passed in'})  
 
 def currenttodo(request):
-    #todos = Todo.objects.filter(user=request.user)
-    return render(request, 'currenttodo.html')
+    err_msg = ""
+
+    if request.method == 'POST':
+        depts = departments()
+        depts.name =  request.POST['department']
+        try:
+            depts.save()
+        except IntegrityError as e:
+            if 'UNIQUE constraint' in str(e.args):
+                err_msg = "Department already exists"
+    
+    dep_list = departments.objects.all()
+    for dep in dep_list:
+        print(dep.name)
+    return render(request, 'currenttodo.html', {'dep_list': dep_list, 'error': err_msg})
